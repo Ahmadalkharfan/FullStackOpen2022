@@ -22,7 +22,6 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
-
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
@@ -46,10 +45,13 @@ const App = () => {
   return (
     <div>
       <Header headers={headers[0]} />
+
       <Button handleClick={handleGoodClick} text='good' />
       <Button handleClick={handleNeutralClick} text='neutral' />
       <Button handleClick={handleBadClick} text='bad' /> 
+
       <Header headers={headers[1]} />
+      
       <History counter={good} text='good'/>
       <History counter={neutral} text='neutral'/>
       <History counter={bad} text='bad'/>
