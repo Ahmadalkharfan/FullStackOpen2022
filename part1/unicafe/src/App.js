@@ -8,10 +8,10 @@ const Header = ({ headers }) => {
   )
 }
 
-const Counter = ({ text, counter }) => {
+const StatisticLine = ({ text, value }) => {
   return (
     <div>
-      {text} {counter}
+      {text} {value}
     </div>
   )
 }
@@ -36,17 +36,17 @@ const Statistics = (props) => {
     No feedback given
   </div>
   )}
-  
+
   return (
     <>
       <Header headers={props.headers} />
 
-      <Counter counter={props.good} text='good' />
-      <Counter counter={props.neutral} text='neutral' />
-      <Counter counter={props.bad} text='bad' />
-      <Counter counter={props.allFeedbacks} text='all' />
-      average {average} <br/>
-      positive {positive} %
+      <StatisticLine value={props.good} text='good' />
+      <StatisticLine value={props.neutral} text='neutral' />
+      <StatisticLine value={props.bad} text='bad' />
+      <StatisticLine value={props.allFeedbacks} text='all' />
+      <StatisticLine value={average} text='average' />
+      <StatisticLine value={positive + '%'} text='all' />
     </>
   )
 }
