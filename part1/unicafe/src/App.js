@@ -10,9 +10,10 @@ const Header = ({ headers }) => {
 
 const StatisticLine = ({ text, value }) => {
   return (
-    <div>
-      {text} {value}
-    </div>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   )
 }
 
@@ -29,24 +30,28 @@ const Statistics = (props) => {
   const average = props.allFeedbacks > 0 ? (props.good - props.bad) / props.allFeedbacks : 0;
   const positive = props.allFeedbacks > 0 ? (props.good / props.allFeedbacks) * 100 : 0;
 
-  if(props.allFeedbacks===0){
-  return (
-  <div>
-    <Header headers={props.headers}/>
-    No feedback given
-  </div>
-  )}
+  if (props.allFeedbacks === 0) {
+    return (
+      <>
+        <Header headers={props.headers} />
+        No feedback given
+      </>
+    )
+  }
 
   return (
     <>
       <Header headers={props.headers} />
-
-      <StatisticLine value={props.good} text='good' />
-      <StatisticLine value={props.neutral} text='neutral' />
-      <StatisticLine value={props.bad} text='bad' />
-      <StatisticLine value={props.allFeedbacks} text='all' />
-      <StatisticLine value={average} text='average' />
-      <StatisticLine value={positive + '%'} text='all' />
+      <table>
+        <tbody>
+          <StatisticLine value={props.good} text='good' />
+          <StatisticLine value={props.neutral} text='neutral' />
+          <StatisticLine value={props.bad} text='bad' />
+          <StatisticLine value={props.allFeedbacks} text='all' />
+          <StatisticLine value={average} text='average' />
+          <StatisticLine value={positive + '%'} text='positive ' />
+        </tbody>
+      </table>
     </>
   )
 }
@@ -76,7 +81,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <>
       <Header headers={headers[0]} />
 
       <Button handleClick={handleGoodClick} text='good' />
@@ -84,7 +89,7 @@ const App = () => {
       <Button handleClick={handleBadClick} text='bad' />
 
       <Statistics headers={headers[1]} good={good} neutral={neutral} bad={bad} allFeedbacks={allFeedbacks} />
-    </div>
+    </>
   )
 }
 
