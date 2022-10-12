@@ -29,6 +29,14 @@ const Statistics = (props) => {
   const average = props.allFeedbacks > 0 ? (props.good - props.bad) / props.allFeedbacks : 0;
   const positive = props.allFeedbacks > 0 ? (props.good / props.allFeedbacks) * 100 : 0;
 
+  if(props.allFeedbacks===0){
+  return (
+  <div>
+    <Header headers={props.headers}/>
+    No feedback given
+  </div>
+  )}
+  
   return (
     <>
       <Header headers={props.headers} />
