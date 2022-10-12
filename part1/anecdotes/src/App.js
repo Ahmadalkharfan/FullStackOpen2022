@@ -1,10 +1,19 @@
 import { useState } from 'react'
 
+const Header = ({ headers }) => {
+  return (
+    <>
+      <h1>{headers}</h1>
+    </>
+  )
+}
+
 const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>
     {text}
   </button>
 )
+
 
 const App = () => {
   const anecdotes = [
@@ -16,10 +25,10 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.'
   ]
-
+  const headers = ['Anecdotes for the day', 'Anecdotes with the most votes'];
   const [selected, setSelected] = useState(0)
-  const [points,setPoints] =useState(new Array(7).fill(0));
-
+  const [points, setPoints] = useState(new Array(anecdotes.length).fill(0));
+  const maxPointsIndex = points.indexOf(Math.max(...points));
   const handleNextClick = () => {
     const min = 0, max = 6;
     setSelected((Math.floor(Math.random() * (max - min) + min)));
@@ -27,19 +36,24 @@ const App = () => {
 
   const handleVoteClick = () => {
     const copy = { ...points }
-    copy[selected] += 1     
+    copy[selected] += 1
     setPoints(copy)
   }
 
   return (
     <div>
+      <Header headers={headers[0]} />
       {anecdotes[selected]}
-      <br/>
+      <br />
       has {points[selected]} votes
       <div>
         <Button handleClick={handleVoteClick} text='vote' />
         <Button handleClick={handleNextClick} text='next anecdotes' />
       </div>
+      <Header headers={headers[1]} />
+      {anecdotes[maxPointsIndex]}
+      <br />
+      has {points[maxPointsIndex]} votes
     </div>
   )
 }
