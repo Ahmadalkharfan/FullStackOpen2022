@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Header = ({headers}) => {
+const Header = ({ headers }) => {
   return (
     <>
       <h1>{headers}</h1>
@@ -8,7 +8,7 @@ const Header = ({headers}) => {
   )
 }
 
-const Counter = ({text,counter}) => {
+const Counter = ({ text, counter }) => {
   return (
     <div>
       {text} {counter}
@@ -22,33 +22,24 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
-const Average = (props) =>{ 
-  if (props.allFeedbacks > 0) {
-    return (
-      <div>
-        average {(props.good - props.bad) / props.allFeedbacks }
-      </div>
-    )
-  }
-  return (
-    <div>
-      average 0
-    </div>
-  )
-}
 
-const Positive = ({good,allFeedbacks}) =>{ 
-  if (allFeedbacks > 0) {
+const Statistics = (props) => {
+
+
+  const average = props.allFeedbacks > 0 ? (props.good - props.bad) / props.allFeedbacks : 0;
+  const positive = props.allFeedbacks > 0 ? (props.good / props.allFeedbacks) * 100 : 0;
+
   return (
-    <div>
-      positive {good/allFeedbacks} %
-    </div>
-  )
-  }
-  return (
-    <div>
-      positive 0 %
-    </div>
+    <>
+      <Header headers={props.headers} />
+
+      <Counter counter={props.good} text='good' />
+      <Counter counter={props.neutral} text='neutral' />
+      <Counter counter={props.bad} text='bad' />
+      <Counter counter={props.allFeedbacks} text='all' />
+      average {average} <br/>
+      positive {positive} %
+    </>
   )
 }
 
@@ -59,8 +50,8 @@ const App = () => {
   const [bad, setBad] = useState(0)
   const [allFeedbacks, setAll] = useState(0)
 
-  const headers = ['give feedback','statistics'];
-  
+  const headers = ['give feedback', 'statistics'];
+
   const handleGoodClick = () => {
     setAll(allFeedbacks + 1)
     setGood(good + 1)
@@ -75,24 +66,16 @@ const App = () => {
     setAll(allFeedbacks + 1)
     setBad(bad + 1)
   }
-  
+
   return (
     <div>
       <Header headers={headers[0]} />
 
       <Button handleClick={handleGoodClick} text='good' />
       <Button handleClick={handleNeutralClick} text='neutral' />
-      <Button handleClick={handleBadClick} text='bad' /> 
+      <Button handleClick={handleBadClick} text='bad' />
 
-      <Header headers={headers[1]} />
-      
-      <Counter counter={good} text='good'/>
-      <Counter counter={neutral} text='neutral'/>
-      <Counter counter={bad} text='bad'/>
-      <Counter counter={allFeedbacks} text='all'/>
-      <Average good={good} bad={bad} allFeedbacks={allFeedbacks} />
-      <Positive good={good} allFeedbacks={allFeedbacks} />
-
+      <Statistics headers={headers[1]} good={good} neutral={neutral} bad={bad} allFeedbacks={allFeedbacks} />
     </div>
   )
 }
