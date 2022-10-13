@@ -1,13 +1,13 @@
 import React from "react"
 
-const Header = ({ course }) => <h1>{course}</h1>
+const Header = ({ course }) => <h2>{course}</h2>
 
 const Total = ({ parts }) => {
     const sum = parts.reduce((num, part) => {
         return num + part.exercises;
     }, 0);
 
-    return (<p>Number of exercises {sum}</p>
+    return (<p><b>Number of exercises {sum}</b></p>
     )
 }
 
@@ -26,12 +26,17 @@ const Content = ({ parts }) => {
     )
 }
 
-const Course = ({ course }) => {
+const Course = ({ courses }) => {
     return (
         <>
+        <h1>Web development curriculum</h1>
+        {courses.map((course) => (
+            <div key={course.id}>
             <Header course={course.name} />
             <Content parts={course.parts} />
             <Total parts={course.parts} />
+            </div>
+            ))}
         </>
     )
 }
