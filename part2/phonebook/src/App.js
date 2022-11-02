@@ -35,27 +35,41 @@ const App = () => {
         number: newNumber
       }
 
-        personService
+      personService
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
         })
-      }
-    else {
-      alert(`${newName} is already added to phonebook`);
+    }
+    else if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+      const person = persons.find(p => p.name === newName)
+      const changedPerson = { ...person, number: newNumber }
+      const id = person.id
+
+      personService
+        .update(person.id, changedPerson)
+        .then(returnedPerson => {
+          setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+        })
+        .catch(error => {
+          alert(
+            `the note '${person.name}' was already deleted from server`
+          )
+          setPersons(persons.filter(p => p.id !== id))
+        })
     }
   }
 
 
   const deletePerson = (id) => {
 
-        personService
-        .deletePerson(id)
-        .then(returnedPerson => {
-          setPersons(persons.filter(person => id !== person.id))
-        })
+    personService
+      .deletePerson(id)
+      .then(returnedPerson => {
+        setPersons(persons.filter(person => id !== person.id))
+      })
   }
 
   const handleNameChange = (event) => {
@@ -87,7 +101,7 @@ const App = () => {
       <h2>Add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons search={search} persons={persons} deletePerson={deletePerson}/>
+      <Persons search={search} persons={persons} deletePerson={deletePerson} />
     </div>
   )
 }
