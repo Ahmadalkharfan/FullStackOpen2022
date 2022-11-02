@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
+import Notification from './components/Notification';
 import personService from './services/persons'
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -29,6 +31,7 @@ const App = () => {
     console.log(newNumber, "is newNumber")
     console.log(persons.filter(person => person.name === newName).length > 0)
 
+
     if (persons.filter(person => person.name === newName).length === 0) {
       const personObject = {
         name: newName,
@@ -41,6 +44,9 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          setMessage(
+            `Added ${personObject.name}`
+          )
         })
     }
     else if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
@@ -57,8 +63,14 @@ const App = () => {
           alert(
             `the note '${person.name}' was already deleted from server`
           )
-          setPersons(persons.filter(p => p.id !== id))
         })
+          setPersons(persons.filter(p => p.id !== id))
+          setMessage(
+            `Updated ${person.name}`
+          )
+          setNewName('')
+          setNewNumber('')
+        
     }
   }
 
@@ -97,6 +109,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter filter={newFilter} filterByName={handleFilterChange} />
       <h2>Add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
