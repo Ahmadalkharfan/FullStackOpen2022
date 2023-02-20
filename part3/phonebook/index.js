@@ -66,23 +66,29 @@ const generateId = () => {
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
+    if (persons.filter(person => person.name === body.name).length === 0) {
+        if (!body.name || !body.number) {
+            return response.status(400).json({
+                error: 'content missing'
+            })
+        }
 
-    if (!body.name) {
+        const person = {
+            name: body.name,
+            number: body.number,
+            date: new Date(),
+            id: generateId(),
+        }
+
+        persons = persons.concat(person)
+
+        response.json(person)
+    }
+    else {
         return response.status(400).json({
-            error: 'content missing'
+            error: 'name must be unique'
         })
     }
-
-    const person = {
-        name: body.name,
-        number: body.number,
-        date: new Date(),
-        id: generateId(),
-    }
-
-    persons = persons.concat(person)
-
-    response.json(person)
 })
 
 app.get('/info', (request, response) => {
