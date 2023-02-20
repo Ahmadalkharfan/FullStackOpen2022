@@ -3,7 +3,11 @@ const app = express()
 var morgan = require('morgan')
 
 app.use(express.json())
-app.use(morgan('combined'))
+morgan.token('body', req => {
+    return JSON.stringify(req.body)
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body '))
 
 let persons = [
     {
@@ -44,6 +48,7 @@ app.get('/api/persons/:id', (request, response) => {
         response.status(404).end()
     }
 })
+
 
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
