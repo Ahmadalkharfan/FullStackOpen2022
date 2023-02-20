@@ -32,10 +32,7 @@ app.get('/', (request, response) => {
   })
   
   app.get('/info', (request, response) => {
-    
     response.send('Phonebook has info for ' + persons.length + '<br> <br>' + new Date() );
-    
-    console.log(timestamps + ' From routes/index.js')
   })
 
   const PORT = 3001
