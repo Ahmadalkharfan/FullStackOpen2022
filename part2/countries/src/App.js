@@ -8,6 +8,7 @@ const App = () => {
   const [countries, setCountries] = useState([])
   const [countriesToShow, setCountriesToShow] = useState([])
   const [query, setQuery] = useState('');
+  const [persons, setPersons] = useState([])
 
   useEffect(() => {
     axios
